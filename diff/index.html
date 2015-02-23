@@ -1,798 +1,86 @@
-<!doctype html>
+<!DOCTYPE html>
+<meta charset="utf8">
+<meta name=viewport content="width=device-width, initial-scale=1">
+<title>generator :: scratchblocks</title>
 
-<meta charset=utf8>
-
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-
-<title>ScratchDiff</title>
-
-<link rel=stylesheet href="scratchblocks2.css">
+<link rel=stylesheet href="http://fonts.googleapis.com/css?family=Noto+Sans:400,700|Source+Code+Pro:400,600">
 
 <style>
-body {
-  font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
-  line-height: 1.2;
-  max-width: 46em;
-  padding: 0;
-  margin: 0 auto;
-  padding-bottom: 2em;
-}
 * {
   box-sizing: border-box;
 }
 
-h1 {
-  font-weight: 400;
+body, div, p, textarea, pre {
   margin: 0;
   padding: 0;
-}
-h1 p {
-  padding-left: 0.5em;
-  font-size: 1rem;
-  font-weight: 300;
-  display: inline-block;
-  color: #666;
-}
-
-input, button {
+  line-height: 1.5em;
   font: inherit;
-  display: inline-block;
-}
-input {
-  font-weight: 300;
-  border: 1px solid #aaa;
-  padding: 2px 4px;
-  width: 16em;
-  font-size: 1.125em;
-  margin-right: 0.5em;
-  color: #686868;
-  background: none;
-  border: none;
-  outline: none;
-  margin-left: -4px;
-}
-input:focus {
-  background: rgba(255, 255, 255, 0.5);
-  color: black;
-}
-button {
-  font-weight: 500;
-  border: 1px solid #aaa;
-  background: #f0f0f0;
-  border-bottom-width: 3px;
-  position: relative;
-  top: -2px;
-  left: -2px;
-  vertical-align: middle;
-  /*-webkit-appearance: none;
-  outline: none;*/
-}
-button:hover {
-  /*background: #f8f8f8;*/
-}
-button:focus {
-  /*box-shadow: 0 0 1px rgba(0, 0, 255, 0.5);*/
-}
-button:active, button.pressed {
-  border-bottom-width: 1px;
-  border-top-width: 2px;
-  background: #e0e0e0;
-  baseline: 2px;
 }
 
-@media (min-width: 48em) { 
-  #left {
-    display: inline-block;
-  }
-}
-
-#right { margin-bottom: 4px; }
-@media (min-width: 28em) { 
-  #right {
-    display: inline-block;
-    margin-bottom: 0;
-  }
-}
-
-#left, #right {
-  position: relative;
-}
-.progress {
-  background: #cde;
-  position: absolute;
-  top: 2px;
-  bottom: 2px;
-  left: 0;
-  width: 0;
-  z-index: -1;
-  opacity: 0;
-}
-.progress.animated {
-  transition: opacity 500ms linear, width 150ms ease-out;
-}
-.progress.on {
-  opacity: 1;
-}
-
-.error .progress {
-  background: #ecc;
-  opacity: 1;
-}
-
-.content.error {
-  font-size: 1.5em;
-  font-weight: 300;
-}
-
-#header {
-  padding: 1em;
-  border-bottom: 2px solid #666;
-  margin-bottom: 1em;
-}
-
-#changes {
-}
-
-h2 {
-  font-weight: 300;
-  font-size: 1.25em;
-  border-bottom: 1px solid #ccc;
-}
-h2.insert:before,
-h2.delete:before {
-  position: absolute;
-  top: 0.25em;
-  bottom: 0.25em;
-  left: 0;
-  width: 4px;
-  content: "";
-}
-h2.insert:before {
-  background: #0c1;
-}
-h2.delete:before {
-  background: #f00;
-}
-h3 {
-  font-weight: 600;
+body {
   font-size: 1em;
-}
-h2, h3 {
-  cursor: pointer;
-  position: relative;
-}
-h2, h3, .content {
-  padding: 0.25em 1em;
-}
-.disclosure-triangle {
-  display: inline-block;
-  font-size: 0.5em;
-  position: absolute;
-  left: 4px;
-  width: 12px;
-  text-align: center;
-  line-height: 1.2rem;
-  transition: transform 100ms linear;
-}
-.disclosure-triangle.closed {
-  -webkit-transform: rotate(-90deg);
-  -moz-transform: rotate(-90deg);
-  transform: rotate(-90deg);
-}
-.closeable.closed {
-  display: none;
+  padding: 1em 2em;
+  margin: 0 auto;
+  font-family: Noto Sans, sans-serif;
 }
 
-.media {
-  overflow: auto;
-  border: 1px solid #ccc;
-  border-radius: 2px;
-  padding: 2px;
-}
-.media img, .media .play-button {
-  background: #eee;
-  max-width: 80px;
-  max-height: 80px;
-  border: 1px solid #ccc;
-  float: left;
-}
-.media .name {
-  margin-top: 8px;
-  margin-left: 100px;
-}
-.play-button {
-  width: 80px;
-  height: 32px;
-  text-align: center;
-  border: 1px solid #ccc;
-  content: "▶";
-  padding: 8px;
-}
-.media.insert {
- box-shadow: 0 0 8px #0c1;
-}
-.media.delete {
-  box-shadow: 0 0 8px #f00;
-  z-index: 104;
+h1, h2 {
+  font-family: Source Code Pro, monospace;
+  letter-spacing: -1px;
 }
 
-.hint {
-  font-size: 0.8em;
-}
-.hint .insert {
-  color: #0c1;
-}
-.hint .delete {
-  color: #f00;
+h1 {
+  font-weight: 700;
+  font-size: 1.5em;
 }
 
-.footer {
-  margin-top: 1.5rem;
-  border-top: 1px solid #ccc;
-  padding-top: 0.5rem;
-  color: #ccc;
-  font-size: 0.8em;
+h1 span {
   font-weight: 400;
-  text-align: right;
+  font-size: 1.125rem;
+  letter-spacing: 0;
 }
-.footer a {
+
+h1 span a {
+  margin-right: 0.5em;
+}
+
+p.big {
+  font-size: 2rem;
+}
+
+a {
+  color: black;
   text-decoration: none;
-  color: inherit;
+  background: #fffeef;
+}
+a:hover {
+  border-bottom: 0.1em solid;
+  cursor: pointer;
+  background: #fffed0
+}
+a:active {
+  color: rgba(0, 0, 0, 0.5);
+}
+
+p {
+  margin: 0 0 1.5rem;
 }
 </style>
 
+<!---------------------------------------------------------------------------->
 
-<div id=header>
-  <h1>ScratchDiff
-    <p>Compare a project with its remix.</p>
-  </h1>
+<h1>
+  ScratchDiff
+</h1>
 
-  <div id=form>
-    <div id=left>
-      <div class="progress animated"></div>
-      <input value=scratch.mit.edu/projects/17088932>
-    </div>
-    <div id=right>
-      <div class=progress></div>
-      <input value=scratch.mit.edu/projects/25062650>
-    </div>
-    <button id=compare-button>Compare!</button>
-  </div>
-</div>
+<p class=big>This tool <a id="link" href="//scratchblocks.github.io/diff/">has moved here</a>.
 
-<div id=changes>
-</div>
-
-
-
-
-
-
-<script src="//ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
-<script src="scratchblocks2.js"></script>
-<script src="../generator/generator.js"></script>
-<script src="difflib.js"></script>
+<p>Please update your links.
 
 <script>
-function el(tagName, className, textContent, children) {
-  if (className === undefined) { className = tagName; tagName = 'div'; }
-  var el = document.createElement(tagName);
-  if (className) el.className = className;
-  if (textContent) el.textContent = textContent;
-  (children || []).forEach(function(child) {
-    el.appendChild(child);
-  });
-  return el;
-}
-
-function makeSection(big, text) {
-  var triangle = el('span', 'disclosure-triangle', '▼');
-  var heading = el(big ? 'h2' : 'h3', null, null, [
-    triangle,
-    document.createTextNode(text),
-  ]);
-  var section = el('closeable');
-  heading.addEventListener('click', function() {
-    triangle.classList.toggle('closed');
-    section.classList.toggle('closed');
-  });
-  if (!big) {
-    var content = el('content');
-    section.appendChild(content);
-  }
-  return {
-    heading: heading,
-    triangle: triangle,
-    section: section,
-    content: content || section,
-  };
-}
-
-var compareButton = document.getElementById('compare-button');
-
-function checkEnterKey(event) {
-  if (event.keyCode === 13) {
-    go();
-
-    if (event.target === compareButton) {
-      compareButton.classList.add('pressed');
-      window.setTimeout(function() {
-        compareButton.classList.remove('pressed');
-      }, 200);
-    }
-  }
-}
-compareButton.addEventListener('keydown', checkEnterKey);
-compareButton.addEventListener('click', go);
-
-var Task = function(size) {
-  this.size = size | 0;
-  this.frac = 0.0;
-};
-
-var Input = function(el) {
-  this.el = el;
-  this.input = el.querySelector('input');
-  this.progressBar = el.querySelector('.progress');
-
-  this.input.addEventListener('keydown', checkEnterKey);
-
-  var myself = this;
-  this.input.addEventListener('input', function(event) {
-    myself.fixValue();
-    updateHash();
-  });
-
-  this.tasks = [];
-};
-
-Input.prototype.getValue = function() {
-  return this.input.value.replace(/[^0-9]+/g, '');
-};
-
-Input.prototype.fixValue = function() {
-  var selStart = this.selectionStart;
-  var selEnd = this.selectionEnd;
-  this.setValue(this.getValue());
-  this.selectionStart = selStart;
-  this.selectionEnd = selEnd;
-};
-
-Input.prototype.setValue = function(value) {
-  value = value.replace(/[^0-9]+/g, '');
-  var newValue = "scratch.mit.edu/projects/" + value;
-  if (this.input.value !== newValue) this.input.value = newValue;
-}
-
-Input.prototype.setProgress = function(frac) {
-  var fullWidth = this.input.offsetWidth;
-  var actualFrac = (frac * 0.95) + 0.05;
-  this.progressBar.style.width = (actualFrac * fullWidth) + 'px';
-};
-
-Input.prototype.updateProgress = function(frac) {
-  var totalSize = 0;
-  var totalComplete = 0.0;
-  this.tasks.forEach(function(task) {
-    totalSize += task.size;
-    totalComplete += task.size * task.frac;
-  });
-  var frac = totalComplete / totalSize;
-  this.setProgress(frac);
-};
-
-Input.prototype.get = function(url, type, cb) {
-  var xhr = new XMLHttpRequest();
-
-  var task = new Task(5000); // arbitrary number, 'cos we don't know any better
-  this.tasks.push(task);
-  var myself = this;
-  xhr.addEventListener('progress', function(event) {
-    if (event.lengthComputable) {
-      task.frac = event.loaded / event.total;
-      task.size = event.total;
-      myself.updateProgress();
-    }
-  });
-  this.updateProgress();
-
-  xhr.addEventListener('load', function(event) {
-    task.frac = 1.0;
-    myself.updateProgress();
-    cb(xhr.response);
-  });
-
-  var failed = function(event) {
-    console.log(event);
-    myself.error();
-    cb(null);
-  };
-  xhr.addEventListener('error', failed);
-  xhr.addEventListener('abort', failed);
-
-  xhr.open('GET', url, true);
-  xhr.responseType = type;
-  xhr.send();
-};
-
-Input.prototype.error = function() {
-  this.el.classList.add('error');
-};
-
-Input.prototype.fetch = function(cb) {
-  this.el.classList.remove('error');
-  this.tasks = [];
-
-  this.fixValue();
-  this.input.blur();
-  this.setProgress(0.05);
-  this.progressBar.classList.remove('animated');
-  window.setTimeout(function() {
-    myself.progressBar.classList.add('on');
-    myself.progressBar.classList.add('animated');
-  }, 10);
-  var id = this.getValue();
-  var url = "http://projects.scratch.mit.edu/internalapi/project/" + id + "/get/";
-
-  var myself = this;
-  this.get(url, '', function(data) {
-    if (!data) {
-      cb(null, {});
-      return;
-    }
-    try {
-      var project = JSON.parse(data);
-    } catch (e) {
-      myself.error();
-      cb(null, {});
-      return;
-    }
-    var assets = [];
-    var remaining = [];
-    project.children.concat([project]).forEach(function(obj) {
-      if (obj.costumes) {
-        obj.costumes.forEach(function(costume) {
-          var md5 = costume.baseLayerMD5;
-          var url = assetURL(md5);
-          myself.get(url, 'blob', function(data) {
-            assets[md5] = data;
-            var index = remaining.indexOf(md5);
-            remaining.splice(index, 1);
-            if (!remaining.length) {
-              window.setInterval(function() {
-                myself.progressBar.classList.remove('on');
-              }, 500);
-              cb(project, assets);
-            }
-          });
-          remaining.push(md5);
-        });
-      }
-    });
-  });
-};
-
-function assetURL(md5) {
-  return "http://assets.scratch.mit.edu/internalapi/asset/" + md5 + "/get/";
-}
-
-var leftInput = new Input(document.getElementById('left'));
-var rightInput = new Input(document.getElementById('right'));
-var changes = document.getElementById('changes');
-
-function updateHash() {
-  window.location.hash = leftInput.getValue() + '+' + rightInput.getValue();
-}
-function readHash() {
-  var hash = window.location.hash;
-  if (hash) {
-    var parts = hash.split('+');
-    if (parts.length == 2) {
-      leftInput.setValue(parts[0]);
-      rightInput.setValue(parts[1]);
-    }
-  }
-  updateHash();
-}
-readHash();
-if (leftInput.getValue() && rightInput.getValue()) go();
-window.setInterval(readHash, 500);
-
-function go(event) {
-  compareButton.blur();
-
-  changes.innerHTML = '';
-  var status = el('div', 'content', 'Fetching…');
-  changes.appendChild(status);
-
-  fetchBoth(function(left, right, assets) {
-    status.textContent = 'Comparing…'
-
-    if (left === null || right === null) {
-      status.textContent = 'Whoops! Something went wrong.';
-      status.classList.add('error');
-      return;
-    }
-
-    // DEBUG
-    window.left = left;
-    window.right = right;
-
-    var result = compare(left, right, assets);
-    changes.innerHTML = '<div class="content hint">Additions highlighted <span class=insert>green</span>, removals highlighted <span class=delete>red</span>.';
-    result.forEach(function(r) {
-      changes.appendChild(r);
-    });
-
-    var footer = el('div', 'footer');
-    footer.innerHTML = 'Uses <a href="//github.com/cemerick/jsdifflib">jsdifflib</a>';
-    changes.appendChild(footer);
-    scratchblocks2.parse('.blocks');
-  });
-}
-
-function fetchBoth(cb) {
-  var left;
-  var right;
-  var bothAssets = {};
-  leftInput.fetch(function(project, assets) {
-    left = project;
-    Object.keys(assets).forEach(function(md5) {
-      bothAssets[md5] = assets[md5];
-    });
-    if (right !== undefined) cb(left, right, bothAssets);
-  });
-  rightInput.fetch(function(project, assets) {
-    right = project;
-    Object.keys(assets).forEach(function(md5) {
-      bothAssets[md5] = assets[md5];
-    });
-    if (left !== undefined) cb(left, right, bothAssets);
-  });
-};
-
-function compare(left, right, assets) {
-  var result = [];
-
-  function getSprites(project) {
-    var sprites = {};
-    sprites['Stage'] = project;
-    project.children.forEach(function(child) {
-      if (child.objName && child.scripts) {
-        sprites[child.objName] = child;
-      }
-    });
-    return sprites;
-  }
-  var leftSprites = getSprites(left);
-  var rightSprites = getSprites(right);
-
-  var spriteNames = Object.keys(leftSprites);
-  Object.keys(rightSprites).forEach(function(name) {
-    if (spriteNames.indexOf(name) === -1) spriteNames.push(name);
-  });
-
-  spriteNames.forEach(function(name) {
-    var s = makeSection(true, name);
-    var section = s.section;
-    result.push(s.heading);
-    result.push(s.section);
-    var different = false;
-
-    var leftObj = leftSprites[name];
-    var rightObj = rightSprites[name];
-
-    if (!leftObj) {
-      s.heading.classList.add('insert');
-    } else if (!rightObj) {
-      s.heading.classList.add('delete');
-    } 
-
-    var costumes = compareMedia('costumes', leftObj, rightObj, assets);
-    if (costumes) {
-      var b = makeSection(false, 'Costumes');
-      b.content.appendChild(costumes);
-      s.content.appendChild(b.heading);
-      s.content.appendChild(b.section);
-      different = true;
-    }
-
-    var sounds = compareMedia('sounds', leftObj, rightObj, assets);
-    if (sounds) {
-      var b = makeSection(false, 'Sounds');
-      b.content.appendChild(sounds);
-      s.content.appendChild(b.heading);
-      s.content.appendChild(b.section);
-      different = true;
-    }
-
-    var blocks = compareScripts(leftObj, rightObj);
-    if (blocks) {
-      var b = makeSection(false, 'Scripts');
-      b.content.appendChild(blocks);
-      s.content.appendChild(b.heading);
-      s.content.appendChild(b.section);
-      different = true;
-    }
-
-    if (!different) {
-      s.heading.removeChild(s.triangle);
-    }
-  });
-
-  return result;
-}
-
-function compareMedia(kind, leftChild, rightChild, assets) {
-  function dump(child) {
-    if (!child || !child[kind]) return [];
-    return child[kind].map(function(media) {
-      return {
-        md5: media.md5 || media.baseLayerMD5,
-        name: media.costumeName || media.soundName,
-      };
-    });
-  }
-
-  var leftSeq = dump(leftChild);
-  var rightSeq = dump(rightChild);
-
-  var result = el('div', kind);
-
-  var ops = diff(leftSeq, rightSeq);
-  if (!ops.length) return;
-  if (ops.length === 1 && ops[0].type == 'equal') return;
-
-  ops.forEach(function(op) {
-    console.log(op);
-    op.range.forEach(function(media) {
-      if (kind === 'costumes') {
-        var icon = el('img', null);
-        icon.src = URL.createObjectURL(assets[media.md5]);
-      } else if (kind === 'sounds') {
-        var icon = el('div', 'play-button', '▶');
-        icon.addEventListener('click', function(event) {
-          console.log(assets[media.md5]);
-        });
-      }
-      var link = el('a', null);
-      link.href = assetURL(media.md5);
-      link.appendChild(icon);
-
-      result.appendChild(el('div', op.type + ' media', null, [
-        link,
-        el('div', 'name', media.name),
-      ]));
-    });
-  });
-
-  return result;
-  //if (result.children) return result;
-}
-
-function compareScripts(leftChild, rightChild) {
-  function dump(child) {
-    if (!child || !child.scripts) return [];
-    var scriptTexts = child.scripts.map(gen.generate);
-    var text = scriptTexts.sort().join('\n\n');
-    return ('\n\n' + text + '\n\n').split('\n');
-  }
-
-  var leftText = dump(leftChild);
-  var rightText = dump(rightChild);
-
-  var sm = new difflib.SequenceMatcher(leftText, rightText);
-
-  var ops = diff(leftText, rightText).map(function(op) {
-    return {
-      type: op.type,
-      text: op.range.join('\n'),
-    }
-  });
-
-  /*
-    var ops = [];
-  sm.get_opcodes().forEach(function(opcode) {
-    var type = opcode[0],
-        lStart = opcode[1],
-        lEnd = opcode[2],
-        rStart = opcode[3],
-        rEnd = opcode[4];
-    if (type === 'replace') {
-      ops.push({
-        type: 'delete',
-        text: leftText.slice(lStart, lEnd).join('\n'),
-      });
-      ops.push({
-        type: 'insert',
-        text: rightText.slice(lStart, lEnd).join('\n'),
-      });
-    } else {
-      ops.push({
-        type: type,
-        text: (leftText.slice(lStart, lEnd).join('\n') ||
-               rightText.slice(rStart, rEnd).join('\n')),
-      });
-    }
-  });
-  */
-
-  // Remove redundant scripts
-  ops.forEach(function(op) {
-    if (op.type === 'equal') {
-      var scripts = op.text.split('\n\n');
-      if (scripts.length > 2) {
-        op.text = [scripts[0], '…', scripts[scripts.length -1]].join('\n\n');
-      }
-    }
-  });
-
-  var scriptText = '';
-  ops.forEach(function(op) {
-    var text = op.text;
-    switch (op.type) {
-      case 'insert':
-        text = text.split('\n').map(function(line) {
-          return line + ' :: insert';
-        }).join('\n');
-        break;
-      case 'delete':
-        text = text.split('\n').map(function(line) {
-          return line + ' :: delete';
-        }).join('\n');
-        break;
-      default:
-        text = text.split('\n').map(function(line) {
-          return line ? line + ' :: transparent' : '';
-        }).join('\n');
-        break;
-    }
-    scriptText += text + '\n';
-  });
-  scriptText = scriptText.trim();
-  if (scriptText === '' || scriptText === ':: transparent' ||
-      scriptText === '… :: transparent') return;
-  return el('div', 'blocks', scriptText);
-}
-
-function diff(left, right) {
-  var sm = new difflib.SequenceMatcher(left, right);
-
-  var ops = [];
-  sm.get_opcodes().forEach(function(opcode) {
-    var type = opcode[0],
-        lStart = opcode[1],
-        lEnd = opcode[2],
-        rStart = opcode[3],
-        rEnd = opcode[4];
-    switch (type) {
-      case 'replace':
-        ops.push({
-          type: 'delete',
-          range: left.slice(lStart, lEnd),
-        });
-        ops.push({
-          type: 'insert',
-          range: right.slice(rStart, rEnd),
-        });
-        break;
-      case 'delete':
-        ops.push({
-          type: type,
-          range: left.slice(lStart, lEnd),
-        });
-        break;
-      case 'insert':
-      case 'equal':
-        ops.push({
-          type: type,
-          range: right.slice(rStart, rEnd),
-        });
-        break;
-    }
-  });
-
-  return ops;
-}
-
+var link = document.getElementById('link').href;
+setInterval(function() {
+  document.getElementById('link').href = link + window.location.hash;
+}, 100);
 </script>
+
