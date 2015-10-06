@@ -1,13 +1,17 @@
 {
   "name": "scratchblocks",
+  "version": "0.1.0",
+  "author": "",
+  "description": "",
+  "moduleType": [],
+  "license": "MIT",
+  "homepage": "",
+  "private": false,
   "main": [
     "./build/scratchblocks2.js",
     "./build/scratchblocks2.css"
   ],
-  "license": "MIT",
-  "private": false,
   "ignore": [
-    "src",
     "tests"
   ],
   "dependencies": {
