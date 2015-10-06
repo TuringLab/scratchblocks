@@ -1,0 +1,16 @@
+{
+  "name": "scratchblocks",
+  "main": [
+    "./build/scratchblocks2.js",
+    "./build/scratchblocks2.css"
+  ],
+  "license": "MIT",
+  "private": false,
+  "ignore": [
+    "src",
+    "tests"
+  ],
+  "dependencies": {
+    "jquery": "1.9.1"
+  }
+}

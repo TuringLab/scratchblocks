@@ -1404,6 +1404,8 @@ var scratchblocks2 = function ($) {
         return $script;
     }
 
+    sb2.render_stack = render_stack;
+
     function render_stack_item(info) {
         switch (info.type) {
             case "cwrap":
