@@ -1,8 +1,8 @@
 {
   "name": "scratchblocks",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Render Scratch blocks code to HTML.",
-  "main": " ",
+  "main": "./build/scratchblocks2.js",
   "directories": {
     "test": "tests"
   },
